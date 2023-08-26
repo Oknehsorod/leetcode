@@ -1,0 +1,18 @@
+{
+  "name": "leetcode",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+  },
+  "scripts": {
+    "test": "jest --verbose ./tests/*.spec.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@jest/globals": "^29.6.4",
+    "ts-jest": "^29.1.1"
+  }
+}
