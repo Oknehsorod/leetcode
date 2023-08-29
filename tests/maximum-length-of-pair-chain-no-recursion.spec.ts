@@ -2021,8 +2021,8 @@ const dataSets: DataSets<[[number, number][]], number> = [
 ];
 
 describe('maximum-length-of-pair-chain', () => {
-  dataSets.slice(-1).forEach((dataSet) => {
-    test(`Input: ${dataSet.input.length}; Output: ${dataSet.output};`, () => {
+  dataSets.forEach((dataSet) => {
+    test(`Input: ${dataSet.input[0].length}; Output: ${dataSet.output};`, () => {
       expect(findLongestChain(...dataSet.input)).toBe(dataSet.output);
     });
   });
