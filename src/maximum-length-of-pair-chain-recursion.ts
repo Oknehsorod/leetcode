@@ -1,48 +1,35 @@
-let memo: Record<string, number> = {};
-
 type Pair = [number, number];
 type Pairs = Pair[];
 
-const cachePair = (pair: Pair, counter: number) => {
-    memo[pair[1]] = counter;
-};
+class ChainCacher {
+    private memo: Record<string, number> = {};
 
-const getCounterFromPair = (pair: Pair): number =>
-    memo[pair[1]] ?? -1;
-
-const findLongestChainWithStartPair = (
-    pair: Pair,
-    pairs: Pairs,
-    counter = 1
-): number => {
-    const cachedPair = getCounterFromPair(pair);
-    if (cachedPair > -1) return counter + cachedPair;
-
-    const filteredPairs = pairs.filter((curPair) => pair[1] < curPair[0]);
-
-    if (filteredPairs.length === 0) {
-        cachePair(pair, 0);
-        return counter;
+    public set(pair: Pair, longestChainLength: number): number {
+        return (this.memo[pair[1]] = longestChainLength);
     }
 
-    const result = Math.max(
-        ...filteredPairs.map((curPair) =>
-            findLongestChainWithStartPair(curPair, filteredPairs, counter + 1)
-        )
-    );
-
-    cachePair(pair, result - counter);
-    return result;
-};
-
-export function findLongestChain(pairs: Pairs): number {
-    memo = {};
-    let result = 1;
-
-    pairs.forEach((pair) => {
-        const resultVariant = findLongestChainWithStartPair(pair, [...pairs]);
-        if (resultVariant > result) result = resultVariant;
-    });
-
-    return result;
+    public get(pair: Pair): number {
+        return this.memo[pair[1]] ?? -1;
+    }
 }
+
+const MIN_PAIR: Pair = [-1002, -1001];
+
+export const findLongestChain = (
+    pairs: Pairs,
+    pair = MIN_PAIR,
+    cacher = new ChainCacher(),
+    counter = 0
+): number =>
+    cacher.set(
+        pair,
+        pairs.reduce((acc, curPair) => {
+            if (pair[1] >= curPair[0]) return acc;
+            const cachedPair = cacher.get(curPair);
+            const longestChainLength =
+                cachedPair > -1
+                    ? cachedPair + counter + 1
+                    : findLongestChain(pairs, curPair, cacher, counter + 1);
+            return longestChainLength > acc ? longestChainLength : acc;
+        }, counter) - counter
+    ) + counter;
