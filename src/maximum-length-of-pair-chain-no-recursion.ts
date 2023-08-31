@@ -9,7 +9,7 @@ const getDippestObjectCounter = (obj: object, counter = 0) => {
     return Math.max(
         ...objKeys.map((key) => {
             if (objMemo[key]) return counter + objMemo[key];
-            const result = getDippestObjectCounter(obj[key], counter + 1)
+            const result = getDippestObjectCounter(obj[key], counter + 1);
             objMemo[key] = result - counter;
             return result;
         })
@@ -28,12 +28,9 @@ export function findLongestChain(pairs: Pairs): number {
 
         Object.keys(chains).forEach((key) => {
             const [firstEl, lastEl] = JSON.parse(key);
-            if (lastEl < pair[0]) {
-                chains[key][pairKey] = chains[pairKey];
-            }
-            if (pair[1] < firstEl) {
-                chains[pairKey][key] = chains[key];
-            }
+
+            if (lastEl < pair[0]) chains[key][pairKey] = chains[pairKey];
+            if (pair[1] < firstEl) chains[pairKey][key] = chains[key];
         });
     });
     console.timeEnd('Chain Creation');
