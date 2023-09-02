@@ -25,11 +25,11 @@ const canJumpWithStartPosition = (
         return false;
 
     for (
-        let i = nums[startPosition] + startPosition;
-        i > startPosition;
-        i -= 1
+        let endPosition = startPosition + nums[startPosition];
+        endPosition > startPosition;
+        endPosition -= 1
     ) {
-        const jumpResult = canJumpWithStartPosition(i, nums, cacher);
+        const jumpResult = canJumpWithStartPosition(endPosition, nums, cacher);
         if (jumpResult) return true;
         cacher.set(startPosition, jumpResult);
     }
